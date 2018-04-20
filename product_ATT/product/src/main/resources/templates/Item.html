@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="../../css/OM.css">
+<script type="text/javascript" src="../../js/jquery-3.2.0.js" th:src="@{/js/jquery-3.2.0.js}"></script>	
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+var modal = document.getElementById('editModal');
+var span = document.getElementsByClassName("close")[0];
+function openEditWindow(prodId)
+{
+	alert("hi");
+		modal.style.display = "block";
+		$.ajax({
+			url: '/openEditWindow'+prodId,
+			contentType: 'application/json; charset=utf-8',
+			type: 'GET',
+			cache: false,
+			success: function(result){
+				$("#editContent").html(result);
+			}
+		}); 
+};
+span.onclick = function() {
+    modal.style.display = "none";
+};
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "block";
+    }
+};
+
+deleteProduct(prodId)
+{
+	alert("hi");
+	$.ajax({
+		url: '/deleteProduct'+prodId,
+		contentType: 'application/json; charset=utf-8',
+		type: 'POST',
+		cache: false,
+		success: function(result){
+			$("#editContent").html(result);
+		}
+	}); 
+};
+/*]]>*/
+</script>
+</head>
+<body>
+	<div th:each="prodDetails : ${prodList}">
+		<div class="alignCenter padding15">
+			<div class="floatLeft selectWidth20 alignLeft blueText">
+				<div class="floatLeft selectWidth40">
+					<!-- <a href='javascript:openEditWindow();'>Edit item</a> -->
+					<input type="button" id="edit" name="edit" value="Edit Product" onclick="openEditWindow(${prodDetails.id})"></input> -->
+				</div>
+				<div class="floatLeft">|</div>
+				<div class="floatRight trashBlack"><a href="#" th:href="@{javascript:deleteProduct(${prodDetails.id})}">delete</a></div>
+				<div class="clear"></div>
+			</div>
+			<div class="floatLeft selectWidth15" th:id="id"
+				th:text="${prodDetails.id}"></div>
+			<div class="floatLeft selectWidth30 alignLeft" th:id="name"
+				th:text="${prodDetails.name}"></div>
+			<div class="floatLeft selectWidth10" th:id="description"
+				th:text="${prodDetails.description}"></div>
+			<div class="floatLeft selectWidth10 alignRight" th:id="price"
+				th:text="${prodDetails.price}"></div>
+			<div class="floatLeft selectWidth10 alignRight" th:id="quantity"
+				th:text="${prodDetails.quantity}"></div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div id="editModal" class="modal">
+		<span class="close">&times;</span>
+		<div id="editContent" class="modal-content"></div>
+	</div>
+	<div class="clear"></div>
+	<div class="omblueLine"></div>
+</body>
+</html>
