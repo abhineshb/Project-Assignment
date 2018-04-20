@@ -37,6 +37,7 @@ public class ProductController {
 		System.out.println("login here ");
 		return "login";
 	}
+	
 
 	@RequestMapping(value = "/homePage", method = RequestMethod.POST)
 	public String UserValidate(@Validated UserDetail user, Model model) {
